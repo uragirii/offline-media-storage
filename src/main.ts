@@ -1,24 +1,41 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import "./style.css";
+import { openDB } from "idb";
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+const DB_VERSION = 1;
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+const button = document.getElementById("btn");
+const app = document.getElementById("app");
+
+if (!button || !app) {
+  throw new Error("Button not found");
+}
+
+button.onclick = async () => {
+  const db = await openDB("test-db1", DB_VERSION, {
+    upgrade: (database) => {
+      if (!database.objectStoreNames.contains("test-store1")) {
+        database.createObjectStore("test-store1", {
+          autoIncrement: true,
+        });
+      }
+    },
+  });
+  // db.add("test-store1", "Some Value");
+  // const res = await fetch(
+  //   "https://images.unsplash.com/photo-1579353977828-2a4eab540b9a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80"
+  // );
+  // const blob = await res.blob();
+
+  // console.log(blob);
+
+  // db.add("test-store1", blob);
+
+  const imageBlob = await db.get("test-store1", 3);
+  console.log(imageBlob);
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(imageBlob);
+  link.download = "image.jpeg";
+  link.textContent = "Download Image";
+
+  app.appendChild(link);
+};
