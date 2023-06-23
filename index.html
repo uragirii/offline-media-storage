@@ -4,12 +4,63 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Offline File Storage Demo</title>
+    <title>Offline Media Storage Demo</title>
   </head>
   <body>
+    <h2>Offline Media Storage Demo</h2>
+    <p>
+      Did you know that your browser can be used to offline store media, files
+      and other stuff? I just
+      <a
+        href="https://twitter.com/quacky_batak/status/1670819410611716103"
+        target="_blank"
+        >discovered this</a
+      >
+      after seeing that you can download Youtube videos on your browser also.
+    </p>
+    <h3>How does it work?</h3>
+    <p>
+      <strong>IndexedDB</strong>. That's it. You can store <code>Blob</code>,
+      <code>File</code>, <code>Uint8Array</code> etc in IndexedDB! And the
+      storage is only limited by your disk space!
+    </p>
+    <h3>Show me!!</h3>
     <div id="app">
-      <button id="btn">Click Me</button>
+      <ul>
+        <li>
+          <button disabled id="btn">Select a file</button> to store in your
+          browser
+        </li>
+        <li>Refresh the page</li>
+        <li>
+          Files in IndexedDB
+          <ul id="file-list">
+            <em id="loading-files">Finding files</em>
+          </ul>
+        </li>
+        <li id="usage">Usage : <em>Calculating</em></li>
+        <li><button id="clear">Clear IndexedDB</button></li>
+      </ul>
     </div>
+    <h3>References</h3>
+    <ul>
+      <li>
+        Mozilla Hacks Article :
+        <a
+          href="https://hacks.mozilla.org/2012/02/storing-images-and-files-in-indexeddb/"
+          target="_blank"
+        >
+          Storing images and files in IndexedDB</a
+        >
+      </li>
+      <li>
+        <a href="https://www.npmjs.com/package/idb" target="_blank"
+          ><code>idb</code> npm library</a
+        >
+        used to simplify syntax of IndexedDB
+      </li>
+    </ul>
+    <input type="file" style="display: none" />
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
